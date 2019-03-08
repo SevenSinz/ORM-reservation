@@ -13,6 +13,8 @@ class Customer {
     this.lastName = lastName;
     this.phone = phone;
     this.notes = notes;
+    
+    // this.fullName = fullName;
   }
 
   /** methods for getting/setting notes (keep as empty string, not NULL) */
@@ -33,6 +35,11 @@ class Customer {
 
   get phone() {
     return this._phone;
+  }
+
+  // creating an instance method, that acts like a property of the instance
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`
   }
 
   /** find all customers. */
