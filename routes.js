@@ -130,5 +130,15 @@ router.post("/:id/add-reservation/", async function (req, res, next) {
   }
 });
 
+/** Handle search for customer by name */
+router.post("/customer/search", async function (req, res, next) {
+  try {
+    const customers = await Customer.searchName(req.body.searchName);
+    return res.render("customer_list.html", {customers})
+  } 
+    catch(err){
+    return next(err);
+  }
+})
 
 module.exports = router;
