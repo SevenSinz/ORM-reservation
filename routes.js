@@ -40,11 +40,12 @@ router.get("/add/", async function (req, res, next) {
 router.post("/add/", async function (req, res, next) {
   try {
     const firstName = req.body.firstName;
+    const middleName = req.body.middleName;
     const lastName = req.body.lastName;
     const phone = req.body.phone;
     const notes = req.body.notes;
 
-    const customer = new Customer({firstName, lastName, phone, notes});
+    const customer = new Customer({firstName, middleName, lastName, phone, notes});
     await customer.save();
 
     return res.redirect(`/${customer.id}/`);
@@ -91,19 +92,23 @@ router.get("/:id/edit/", async function (req, res, next) {
 /** Handle editing a customer. */
 
 router.post("/:id/edit/", async function (req, res, next) {
+  debugger
   try {
+    const id = req.params.id;
     const firstName = req.body.firstName;
+    const middleName = req.body.middleName;
     const lastName = req.body.lastName;
     const phone = req.body.phone;
     const notes = req.body.notes;
-
-    const customer = new Customer({firstName, lastName, phone, notes});
+    debugger
+    const customer = new Customer({id, firstName, middleName, lastName, phone, notes});
     await customer.save();
 
-    return res.redirect(`/${customer.id}/`);
+    return res.redirect(`/${id}/`);
   }
 
   catch (err) {
+    debugger
     return next(err);
   }
 });
@@ -138,6 +143,16 @@ router.post("/customer/search", async function (req, res, next) {
   } 
     catch(err){
     return next(err);
+  }
+})
+
+/** handle best customers  */
+router.get("/customers/top10", async function (req, res, next) {
+  try {
+    const customers = await Customer.getTopTen();
+    return res.render("customer_list.html", {customers},)
+  } catch (err){
+      return next(err)
   }
 })
 
